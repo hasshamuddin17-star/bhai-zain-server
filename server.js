@@ -28,7 +28,7 @@ if (!apiKey) {
 
 }
 
-const ai =
+const ai =  
   new GoogleGenAI({
     apiKey: apiKey
   });
