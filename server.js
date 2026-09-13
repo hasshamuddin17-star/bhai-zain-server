@@ -87,9 +87,6 @@ app.post("/ask", async (req, res) => {
 
     }
 
-
-    /* --------------------------------------
-       LIMIT + CLEAN HISTORY
     -------------------------------------- */
 
     const safeHistory =
@@ -158,7 +155,7 @@ app.post("/ask", async (req, res) => {
       await ai.models.generateContent({
 
         model:
-          "gemini-3.6-flash-lite",
+          "gemini-3.5-flash-lite",
 
         contents:
           contents,
