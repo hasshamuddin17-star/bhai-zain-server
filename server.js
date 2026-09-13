@@ -158,7 +158,7 @@ app.post("/ask", async (req, res) => {
       await ai.models.generateContent({
 
         model:
-          "gemini-3.6-flash",
+          "gemini-3.6-flash-lite",
 
         contents:
           contents,
