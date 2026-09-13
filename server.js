@@ -28,7 +28,7 @@ if (!apiKey) {
 
 }
 
-const ai =  
+const ai =
   new GoogleGenAI({
     apiKey: apiKey
   });
@@ -57,7 +57,6 @@ app.post("/ask", async (req, res) => {
 
   const startTime =
     Date.now();
-
 
   try {
 
@@ -90,8 +89,7 @@ app.post("/ask", async (req, res) => {
 
 
     /* --------------------------------------
-       LIMIT HISTORY
-       Prevents unnecessarily huge requests.
+       LIMIT + CLEAN HISTORY
     -------------------------------------- */
 
     const safeHistory =
@@ -101,6 +99,7 @@ app.post("/ask", async (req, res) => {
 
           item &&
           typeof item.text === "string" &&
+          item.text.trim() &&
           (
             item.role === "user" ||
             item.role === "model"
@@ -110,7 +109,7 @@ app.post("/ask", async (req, res) => {
 
 
     /* --------------------------------------
-       BUILD GEMINI CONTENT
+       BUILD GEMINI CONTENTS
     -------------------------------------- */
 
     const contents =
@@ -131,30 +130,24 @@ app.post("/ask", async (req, res) => {
       }));
 
 
-    /*
-      Safety fallback:
-      If frontend sends no history,
-      send the current message.
-    */
+    /* --------------------------------------
+       ALWAYS END WITH CURRENT USER MESSAGE
+    -------------------------------------- */
 
-    if (contents.length === 0) {
+    contents.push({
 
-      contents.push({
+      role: "user",
 
-        role: "user",
+      parts: [
 
-        parts: [
+        {
+          text:
+            message
+        }
 
-          {
-            text:
-              message
-          }
+      ]
 
-        ]
-
-      });
-
-    }
+    });
 
 
     /* --------------------------------------
